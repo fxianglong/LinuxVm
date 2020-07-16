@@ -13,6 +13,7 @@ void* thr_start(void* arg){
         std::string buf;
         if(cli_sock->Recv(&buf)==false){
             cli_sock->Close();
+            pthread_exit(NULL);
             continue;
         }
         printf("client say:%s\n",&buf[0]);
@@ -23,11 +24,13 @@ void* thr_start(void* arg){
 
         if(cli_sock->Send(buf)==false){
             cli_sock->Close();
+            pthread_exit(NULL);
             continue;
         }
     }
     //循环退出关闭套接字
     cli_sock->Close();
+    pthread_exit(NULL);
     return NULL;
 }
 
